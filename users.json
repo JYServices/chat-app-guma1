@@ -1,0 +1,27 @@
+[
+  {
+    "username": "유준우개발자1",
+    "password": "$2b$14$pBE.B.jKFjVLp2vwSBtyIOli2.Ygihobd4VWrtshQ4XZlVbSblFJq",
+    "profilePicture": "/uploads/5a231f394067cf32467ff0ab12c7bc92"
+  },
+  {
+    "username": "유준우개발자2",
+    "password": "$2b$14$L9gm32wU3rU7j1i4WREQGucz1AesJKK0WZVUAW.H4gJZmvvp2nVti",
+    "profilePicture": "/uploads/95db22d22c1ce89b80df9043d7e38192"
+  },
+  {
+    "username": "고조𝟅𝟈",
+    "password": "$2b$14$98Ycg/eKCZoIiHSTNEXycepyhiFrBTWdXgaYTWxF.9P8xV76rLYPe",
+    "profilePicture": "/uploads/d81875ee95e8245d19de9bc1cd29e0a3"
+  },
+  {
+    "username": "유준우",
+    "password": "$2b$14$B/MetEuAIw1m7Mi4v1PF1OLcuSUBekUTn8xTMkrBfP2Y4xBsephKa",
+    "profilePicture": "/uploads/550dd8e178772ad349667fe102c61123"
+  },
+  {
+    "username": "장민준",
+    "password": "$2b$14$t6USNa1cgM9Qk9g5PAaKO.y0Vit0YgftoaxZ/EPTn/eyJQ5gpcGma",
+    "profilePicture": "/uploads/e3c93bbc7ef0016f466a9b90dc3ef6f3"
+  }
+]

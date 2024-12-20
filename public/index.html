@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>실시간 채팅</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    
+    h1 {
+      color: #333;
+    }
+    
+    #name-input-popup {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #chat-messages {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      max-width: 600px;
+      height: 400px;
+      overflow-y: auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      padding: 10px;
+      display: none; /* 기본적으로 채팅 영역 숨김 */
+    }
+
+    #chat-messages li {
+      padding: 8px;
+      margin-bottom: 10px;
+      background-color: #e0f7fa;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #chat-form {
+      display: flex;
+      margin-top: 10px;
+      width: 100%;
+      max-width: 600px;
+      display: none; /* 기본적으로 채팅 입력창 숨김 */
+    }
+
+    #message-input {
+      width: 80%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      width: 20%;
+      padding: 10px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>실시간 채팅</h1>
+  
+  <!-- 이름 입력 팝업 -->
+  <div id="name-input-popup">
+    <label for="username">이름을 입력하세요:</label>
+    <input type="text" id="username" autocomplete="off" />
+    <button id="join-btn">입장</button>
+  </div>
+
+  <!-- 채팅 메시지 목록 -->
+  <ul id="chat-messages"></ul>
+
+  <!-- 채팅 입력 폼 -->
+  <form id="chat-form">
+    <input type="text" id="message-input" autocomplete="off" />
+    <button type="submit">전송</button>
+  </form>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const nameInputPopup = document.getElementById('name-input-popup');
+    const usernameInput = document.getElementById('username');
+    const joinButton = document.getElementById('join-btn');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const messageInput = document.getElementById('message-input');
+
+    let username = '';
+
+    // 이름을 입력하고 입장
+    joinButton.addEventListener('click', () => {
+      username = usernameInput.value.trim();
+      if (username) {
+        // 서버로 이름 전송
+        socket.emit('set username', username);
+        nameInputPopup.style.display = 'none';  // 이름 입력 창 숨기기
+        chatMessages.style.display = 'block';  // 채팅 메시지 영역 표시
+        chatForm.style.display = 'flex';  // 채팅 입력 폼 표시
+      }
+    });
+
+    // 메시지 전송
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const message = messageInput.value;
+      if (message.trim() !== '') {
+        socket.emit('chat message', message);
+        messageInput.value = '';
+      }
+    });
+
+    // 메시지 수신 시 화면에 표시
+    socket.on('chat message', (sender, message) => {
+      const li = document.createElement('li');
+      li.textContent = `${sender}: ${message}`;
+      chatMessages.appendChild(li);
+      chatMessages.scrollTop = chatMessages.scrollHeight;  // 스크롤 맨 아래로
+    });
+
+    // 이전 메시지 로딩
+    socket.on('load messages', (messages) => {
+      messages.forEach((msg) => {
+        const li = document.createElement('li');
+        li.textContent = `${msg.sender}: ${msg.message}`;
+        chatMessages.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>
